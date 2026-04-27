@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP BOT - Buy Virtual Numbers for OTP Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* Glassmorphism Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            background: none;
+            -webkit-text-fill-color: #4ECDC4;
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #4ECDC4;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 30px auto;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box i {
+            color: #4ECDC4;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 16px;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Services Grid */
+        .services-section {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #4ECDC4;
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .service-name {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .service-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4ECDC4;
+        }
+
+        .service-desc {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .availability {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #4CAF50;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 24px;
+            color: #4ECDC4;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .countries-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .country-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .country-item:hover {
+            background: rgba(78, 205, 196, 0.2);
+            transform: translateX(5px);
+        }
+
+        .country-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .country-flag {
+            font-size: 28px;
+        }
+
+        .country-name {
+            font-weight: 500;
+        }
+
+        .country-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4ECDC4;
+        }
+
+        /* Order Modal */
+        .order-number {
+            background: rgba(78, 205, 196, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .order-number .number {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+
+        .otp-status {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .otp-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(78, 205, 196, 0.3);
+            border-top-color: #4ECDC4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .otp-code-display {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #4ECDC4, #FF6B6B);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .otp-code-display .code {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 10px;
+            margin: 10px 0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4ECDC4, #FF6B6B);
+            color: white;
+        }
+
+        .btn-danger {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF6B6B;
+            border: 1px solid #FF6B6B;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            z-index: 3000;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .admin-panel-link {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i> CHEAP<span style="color:#4ECDC4">OTP</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#" class="nav-link active">Home</a>
+                    <a href="#" class="nav-link">Services</a>
+                    <a href="#" class="nav-link">Orders</a>
+                    <a href="#" class="nav-link">Support</a>
+                </div>
+                <div class="balance-card">
+                    <i class="fas fa-wallet"></i>
+                    <span id="balance">₹0.00</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Buy Virtual Numbers<br><span class="gradient-text">Receive OTP Instantly</span></h1>
+            <p class="section-subtitle">200+ Services | 180+ Countries | 24/7 Support</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search services... (Telegram, WhatsApp, Google...)">
+                    <i class="fas fa-microphone"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Popular Services</h2>
+            <p class="section-subtitle">Tap any service to buy virtual number</p>
+            <div class="services-grid" id="servicesGrid">
+                <div style="text-align:center; padding:40px;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading services...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Country Modal -->
+    <div id="countryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalServiceName">Telegram</h3>
+                <button class="modal-close" onclick="closeCountryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px; color: rgba(255,255,255,0.6);">Tap countries below to order</p>
+                <div class="countries-list" id="countriesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Details</h3>
+                <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="orderContent"></div>
+                <div class="modal-buttons">
+                    <button class="btn btn-primary" onclick="checkOTP()">
+                        <i class="fas fa-sync-alt"></i> Check OTP
+                    </button>
+                    <button class="btn btn-danger" onclick="cancelOrder()">
+                        <i class="fas fa-times"></i> Cancel & Refund
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <a href="admin.html" class="admin-panel-link"><i class="fas fa-crown"></i> Admin Panel</a>
+
+    <script>
+        const API_URL = 'api.php';
+        let currentService = null;
+        let currentOrder = null;
+        let otpInterval = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadServices();
+            loadBalance();
+        });
+
+        async function loadServices() {
+            try {
+                const response = await fetch(`${API_URL}?action=getServices`);
+                const data = await response.json();
+                if (data.success) {
+                    displayServices(data.services);
+                } else {
+                    loadMockServices();
+                }
+            } catch (error) {
+                loadMockServices();
+            }
+        }
+
+        function loadMockServices() {
+            const services = [
+                { code: 'tg', name: 'Telegram', price: '18.50', available: 999, icon: 'fab fa-telegram', desc: 'Best for Telegram verification' },
+                { code: 'wa', name: 'WhatsApp', price: '25.00', available: 500, icon: 'fab fa-whatsapp', desc: 'WhatsApp Business & Personal' },
+                { code: 'gp', name: 'Google', price: '15.00', available: 1200, icon: 'fab fa-google', desc: 'Gmail, YouTube, Drive' },
+                { code: 'fb', name: 'Facebook', price: '20.00', available: 800, icon: 'fab fa-facebook', desc: 'Facebook, Messenger, Meta' },
+                { code: 'ig', name: 'Instagram', price: '22.00', available: 650, icon: 'fab fa-instagram', desc: 'Instagram DMs & Stories' },
+                { code: 'tw', name: 'Twitter', price: '19.00', available: 400, icon: 'fab fa-twitter', desc: 'Twitter/X verification' },
+                { code: 'ap', name: 'Apple', price: '28.00', available: 300, icon: 'fab fa-apple', desc: 'Apple ID, iCloud' },
+                { code: 'ms', name: 'Microsoft', price: '21.00', available: 550, icon: 'fab fa-microsoft', desc: 'Outlook, Teams, Office' },
+                { code: 'dc', name: 'Discord', price: '17.00', available: 350, icon: 'fab fa-discord', desc: 'Discord server verification' },
+                { code: 'sc', name: 'Snapchat', price: '23.00', available: 280, icon: 'fab fa-snapchat', desc: 'Snapchat account' }
+            ];
+            displayServices(services);
+        }
+
+        function displayServices(services) {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+            
+            services.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                card.onclick = () => showCountries(service);
+                card.innerHTML = `
+                    <div class="service-header">
+                        <div class="service-name">
+                            <div class="service-icon">
+                                <i class="${service.icon || getServiceIcon(service.code)}"></i>
+                            </div>
+                            ${service.name}
+                        </div>
+                        <div class="service-price">₹${service.price}</div>
+                    </div>
+                    <div class="service-desc">${service.desc || 'Tap countries below to order'}</div>
+                    <div class="availability">
+                        <i class="fas fa-check-circle"></i> ${service.available}+ available
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function getServiceIcon(code) {
+            const icons = {
+                'tg': 'fab fa-telegram',
+                'wa': 'fab fa-whatsapp',
+                'gp': 'fab fa-google',
+                'fb': 'fab fa-facebook',
+                'ig': 'fab fa-instagram',
+                'tw': 'fab fa-twitter'
+            };
+            return icons[code] || 'fas fa-mobile-alt';
+        }
+
+        function filterServices() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                const name = card.querySelector('.service-name').innerText.toLowerCase();
+                if (name.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', filterServices);
+
+        function showCountries(service) {
+            currentService = service;
+            document.getElementById('modalServiceName').innerText = service.name;
+            
+            const countries = [
+                { code: '91', name: 'India', flag: '🇮🇳', price: service.price },
+                { code: '1', name: 'United States', flag: '🇺🇸', price: (parseFloat(service.price) + 5).toFixed(2) },
+                { code: '44', name: 'United Kingdom', flag: '🇬🇧', price: (parseFloat(service.price) + 4).toFixed(2) },
+                { code: '61', name: 'Australia', flag: '🇦🇺', price: (parseFloat(service.price) + 6).toFixed(2) },
+                { code: '49', name: 'Germany', flag: '🇩🇪', price: (parseFloat(service.price) + 4).toFixed(2) },
+                { code: '33', name: 'France', flag: '🇫🇷', price: (parseFloat(service.price) + 3).toFixed(2) },
+                { code: '81', name: 'Japan', flag: '🇯🇵', price: (parseFloat(service.price) + 7).toFixed(2) }
+            ];
+            
+            document.getElementById('countriesList').innerHTML = countries.map(country => `
+                <div class="country-item" onclick="buyNumber('${service.code}', '${country.code}', '${country.name}', ${country.price})">
+                    <div class="country-info">
+                        <span class="country-flag">${country.flag}</span>
+                        <span class="country-name">${country.name}</span>
+                    </div>
+                    <div class="country-price">₹${country.price}</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('countryModal').style.display = 'flex';
+        }
+
+        async function buyNumber(serviceCode, countryCode, countryName, price) {
+            closeCountryModal();
+            showToast('Buying number...', 'info');
+            
+            try {
+                const response = await fetch(`${API_URL}?action=buyNumber&service=${serviceCode}&country=${countryCode}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentOrder = {
+                        id: data.activation_id,
+                        number: data.number,
+                        price: data.price,
+                        service: serviceCode
+                    };
+                    showOrderModal();
+                    startOTPPolling();
+                    showToast('Number purchased successfully!', 'success');
+                    loadBalance();
+                    logToAdmin(currentOrder);
+                } else {
+                    showToast('Failed: ' + (data.error || 'Try again'), 'error');
+                }
+            } catch (error) {
+                showToast('Network error!', 'error');
+            }
+        }
+
+        function showOrderModal() {
+            const orderContent = document.getElementById('orderContent');
+            orderContent.innerHTML = `
+                <div class="order-number">
+                    <i class="fas fa-phone"></i>
+                    <div class="number">${currentOrder.number}</div>
+                    <small>Send OTP to this number</small>
+                </div>
+                <div class="otp-status" id="otpStatusDiv">
+                    <div class="otp-spinner"></div>
+                    <p>⏳ Waiting for OTP...</p>
+                    <small>Send verification code to this number</small>
+                </div>
+                <div class="otp-code-display" id="otpCodeDiv" style="display:none;">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="code" id="otpCode"></div>
+                    <small>Use this code for verification</small>
+                </div>
+            `;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function startOTPPolling() {
+            if (otpInterval) clearInterval(otpInterval);
+            otpInterval = setInterval(checkOTP, 5000);
+        }
+
+        async function checkOTP() {
+            if (!currentOrder) return;
+            
+            try {
+                const response = await fetch(`${API_URL}?action=checkOTP&id=${currentOrder.id}`);
+                const data = await response.json();
+                
+                if (data.success && data.code) {
+                    clearInterval(otpInterval);
+                    document.getElementById('otpStatusDiv').style.display = 'none';
+                    const otpCodeDiv = document.getElementById('otpCodeDiv');
+                    otpCodeDiv.style.display = 'block';
+                    document.getElementById('otpCode').innerText = data.code;
+                    showToast(`OTP Received: ${data.code}`, 'success');
+                    updateAdminOrder(currentOrder.id, data.code);
+                }
+            } catch (error) {
+                console.error('Error checking OTP:', error);
+            }
+        }
+
+        async function cancelOrder() {
+            if (!currentOrder) return;
+            if (confirm('Cancel order? Refund will be processed.')) {
+                try {
+                    await fetch(`${API_URL}?action=cancelOrder&id=${currentOrder.id}`);
+                    clearInterval(otpInterval);
+                    closeOrderModal();
+                    showToast('Order cancelled. Refunded!', 'info');
+                    loadBalance();
+                } catch (error) {
+                    showToast('Error cancelling order', 'error');
+                }
+            }
+        }
+
+        async function loadBalance() {
+            try {
+                const response = await fetch(`${API_URL}?action=getBalance`);
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('balance').innerText = `₹${data.balance}`;
+                }
+            } catch (error) {
+                document.getElementById('balance').innerText = '₹0.00';
+            }
+        }
+
+        function logToAdmin(order) {
+            let orders = JSON.parse(localStorage.getItem('adminOrders') || '[]');
+            orders.unshift({
+                id: order.id,
+                number: order.number,
+                service: order.service,
+                price: order.price,
+                time: new Date().toLocaleString(),
+                status: 'pending',
+                otp: null
+            });
+            localStorage.setItem('adminOrders', JSON.stringify(orders.slice(0, 50)));
+        }
+
+        function updateAdminOrder(orderId, otpCode) {
+            let orders = JSON.parse(localStorage.getItem('adminOrders') || '[]');
+            orders = orders.map(o => {
+                if (o.id === orderId) {
+                    return { ...o, status: 'completed', otp: otpCode };
+                }
+                return o;
+            });
+            localStorage.setItem('adminOrders', JSON.stringify(orders));
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function closeCountryModal() {
+            document.getElementById('countryModal').style.display = 'none';
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+            if (otpInterval) clearInterval(otpInterval);
+            currentOrder = null;
+        }
+    </script>
+</body>
+</html>
+
+
+
